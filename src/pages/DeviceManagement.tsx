@@ -10,18 +10,18 @@ import { columns, users } from "../utilities/data";
 
 
 const DeviceManagement: React.FC = () => {
-  
+
   const [toggleStates, setToggleStates] = useState<ToggleStates>(() => {
     const initialState: ToggleStates = {};
     users.forEach((user) => {
       initialState[user.name] = {};
       columns.forEach((col) => {
-        initialState[user.name][col] = Math.random() > 0.5; 
+        initialState[user.name][col] = Math.random() > 0.5;
       });
     });
     return initialState;
   });
-  
+
   const [selectedEvent, setSelectedEvent] = useState<SelectedEvent | null>(null);
 
   const handleToggle = (userName: string, columnName: string) => {
@@ -83,8 +83,8 @@ const DeviceManagement: React.FC = () => {
             </p>
           </div>
 
-          <div className="table-responsive">
-            <table className="table">
+          <div className="table-responsive table-container">
+            <table className="styled-table">
               <thead>
                 <tr className="table-heading">
                   <th className="first-col">Status</th>
@@ -109,12 +109,13 @@ const DeviceManagement: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {users.map((user) => (
-                  <tr key={user.name}>
-                    <td className={user.status === "online" ? "text-success" : "text-danger"}>
+                {users.map((user, index) => (
+                  <tr key={user.name} className={index % 2 === 0 ? "row-even" : "row-odd"}>
+                    <td
+                      className={user.status === "online" ? "text-success" : "text-danger"}
+                    >
                       <span
-                        className={`status-dot ${user.status === "online" ? "online" : "offline"
-                          }`}
+                        className={`status-dot ${user.status === "online" ? "online" : "offline"}`}
                       ></span>
                     </td>
                     <td>{user.name}</td>
@@ -135,6 +136,7 @@ const DeviceManagement: React.FC = () => {
               </tbody>
             </table>
           </div>
+
         </div>
       </div>
 
