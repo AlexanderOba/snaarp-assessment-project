@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RxDashboard } from "react-icons/rx";
 import Organizations from "../components/OranizationSection";
 import { PiDeviceMobileCameraLight, PiDesktopTowerFill, PiLinuxLogo, PiUsb, PiSimCardLight, PiDiscLight, PiLaptop, PiPlugBold } from "react-icons/pi";
 import { GrWindows } from "react-icons/gr";
 import { IoLogoApple, IoBluetoothOutline } from "react-icons/io5";
 import { SlPrinter } from "react-icons/sl";
-import { SelectedEvent, ToggleStates } from "../types/DeviceMangement";
+import { ColumnToggleState, SelectedEvent, ToggleStates } from "../types/DeviceMangement";
 import { columns, users } from "../utilities/data";
+import { FaChevronDown } from "react-icons/fa6";
 
 
 const DeviceManagement: React.FC = () => {
+  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [selectedEvent, setSelectedEvent] = useState<SelectedEvent | null>(null);
+  const [columnsToggleStates, setColumnsToggleStates] = useState<ColumnToggleState>(
+    columns.reduce((acc, col) => ({ ...acc, [col]: true }), {})
+  );
 
   const [toggleStates, setToggleStates] = useState<ToggleStates>(() => {
     const initialState: ToggleStates = {};
@@ -22,7 +28,6 @@ const DeviceManagement: React.FC = () => {
     return initialState;
   });
 
-  const [selectedEvent, setSelectedEvent] = useState<SelectedEvent | null>(null);
 
   const handleToggle = (userName: string, columnName: string) => {
     setToggleStates((prevState) => ({
@@ -36,9 +41,36 @@ const DeviceManagement: React.FC = () => {
     setSelectedEvent({ user: userName, event: columnName });
   };
 
+  const handleFilterStatus = (status: any) => {
+    const filtered = users.filter((user) =>
+      status === "" ? true : user.status === status
+    );
+    setFilteredUsers(filtered);
+  };
+
   const closeModal = () => {
     setSelectedEvent(null);
   };
+
+  const handleColumnToggle = (col: any) => {
+    setColumnsToggleStates((prevState) => ({
+      ...prevState,
+      [col]: !prevState[col],
+    }));
+
+    setToggleStates((prevState) => {
+      const updatedState = { ...prevState };
+      users.forEach((user) => {
+        updatedState[user.name][col] = !columnsToggleStates[col];
+      });
+      return updatedState;
+    });
+  };
+
+  useEffect(() => {
+    setFilteredUsers(users);
+  }, [users]);
+
 
   return (
     <div>
@@ -84,7 +116,7 @@ const DeviceManagement: React.FC = () => {
           </div>
 
           <div className="table-responsive table-container">
-            <table className="styled-table">
+            <table className="styled-table" style={{ width: '100%' }}>
               <thead>
                 <tr className="table-heading">
                   <th className="first-col">Status</th>
@@ -109,8 +141,33 @@ const DeviceManagement: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {users.map((user, index) => (
-                  <tr key={user.name} className={index % 2 === 0 ? "row-even" : "row-odd"}>
+                <tr className="row-even">
+                  <th></th>
+                  <th className="">
+                    <div className="custom-dropdown">
+                      <select className="select-input" onChange={(e) => handleFilterStatus(e.target.value)}>
+                        <option value="">All</option>
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                      </select>
+                      <FaChevronDown size={15} color="#888888" className="dropdown-icon"/>
+                    </div>
+                  </th>
+                  {columns.map((col, index) => (
+                    <td key={index}>
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={columnsToggleStates[col]}
+                          onChange={() => handleColumnToggle(col)}
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </td>
+                  ))}
+                </tr>
+                {filteredUsers.map((user, index) => (
+                  <tr key={user.name} className={index % 2 === 0 ? "row-odd" : "row-even"}>
                     <td
                       className={user.status === "online" ? "text-success" : "text-danger"}
                     >
@@ -118,7 +175,7 @@ const DeviceManagement: React.FC = () => {
                         className={`status-dot ${user.status === "online" ? "online" : "offline"}`}
                       ></span>
                     </td>
-                    <td>{user.name}</td>
+                    <td className="name-col">{user.name}</td>
                     {columns.map((col) => (
                       <td key={col}>
                         <label className="switch">
