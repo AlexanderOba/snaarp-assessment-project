@@ -39,7 +39,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             <NavLink
               to={item.path}
               className={({ isActive }) =>
-                `nav-link align-items-center ${isActive ? 'active' : 'link-dark'}`
+                `nav-link align-items-center ${isOpen ? 'nav-w-100' : 'nav-w-60'} ${isActive ? 'active' : 'link-dark'}`
               }
             >
               <item.icon className="me-2" size={20} />
@@ -77,10 +77,12 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               className="profile-image"
             />
           </div>
-          <div className="profile-details">
-            <span className="user-name">Chidinma Snaarp</span>
-            <span className="user-email">aln.lawso@example.com</span>
-          </div>
+          {isOpen &&
+            <div className="profile-details">
+              <span className="user-name">Chidinma Snaarp</span>
+              <span className="user-email">aln.lawso@example.com</span>
+            </div>
+          }
         </div>
       </ul>
     </div>

@@ -26,6 +26,7 @@ const Organizations = () => {
                         checked={selectedOption === "all"}
                         onChange={(e) => setSelectedOption(e.target.value)}
                     />
+                    <span className="radio-custom"></span>
                     <span className="radio-label">All organizational units users</span>
                 </label>
                 <label className="radio-item">
@@ -36,6 +37,7 @@ const Organizations = () => {
                         checked={selectedOption === "selected"}
                         onChange={(e) => setSelectedOption(e.target.value)}
                     />
+                    <span className="radio-custom"></span>
                     <span className="radio-label">Selected Organizational units users</span>
                 </label>
             </div>

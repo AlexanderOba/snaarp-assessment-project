@@ -51,6 +51,14 @@ body {
   font-weight: 600 !important;
 }
 
+.nav-w-100{
+  width: 100%;
+}
+
+.nav-w-60{
+  width: 60%;
+}
+
 .navbar-wraper {
   display: flex;
   justify-content: space-between;
@@ -152,24 +160,54 @@ input:focus {
 }
 
 .radio-group {
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background-color: #f7f8fa;
+  border-radius: 8px;
 }
 
 .radio-item {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  gap: 10px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
 }
 
-.radio-item input {
-  margin-right: 8px;
-  accent-color: #007bff;
+.radio-item input[type="radio"] {
+  display: none; /* Hide the default radio input */
 }
 
-.radio-label {
-  font-size: 13px;
-  color: #333333;
+.radio-custom {
+  display: inline-block;
+  width: 17px;
+  height: 16px;
+  border: 1px solid #c6c6c6;
+  border-radius: 50%;
+  background-color: #fff;
+  position: relative;
 }
+
+.radio-item input[type="radio"]:checked + .radio-custom {
+  border-color: #3b82f6;
+}
+
+.radio-item input[type="radio"]:checked + .radio-custom::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 49%;
+  transform: translate(-50%, -50%);
+}
+
 
 .select-dropdown {
   display: flex;
@@ -259,9 +297,9 @@ input:focus {
 }
 
 .table-container{
-  border: 1px solid #ddd; /* Border around the table */
-  border-radius: 8px; /* Optional: Rounded corners */
-  overflow: hidden; 
+  border: 1px solid #ddd; 
+  border-radius: 8px;
+  overflow-x: auto;
 }
 
 .table-heading> th{
@@ -276,6 +314,7 @@ input:focus {
   display: flex;
   align-items: center;
   flex-direction: column;
+  text-align: center;
 }
 
 .row-even {
@@ -310,12 +349,19 @@ tr:hover {
 }
 
 .styled-table td {
-  padding: 12px 16px;
+  padding: 12px;
   text-align: left;
 }
 
 .name-col{
  color: #7183FE;
+}
+
+.name-col img{
+  border-radius: 3px;
+  margin-right: 8px;
+  width: 22px;
+  height: 22px;
 }
 
 .status-dot {

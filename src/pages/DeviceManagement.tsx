@@ -28,7 +28,6 @@ const DeviceManagement: React.FC = () => {
     return initialState;
   });
 
-
   const handleToggle = (userName: string, columnName: string) => {
     setToggleStates((prevState) => ({
       ...prevState,
@@ -70,7 +69,6 @@ const DeviceManagement: React.FC = () => {
   useEffect(() => {
     setFilteredUsers(users);
   }, [users]);
-
 
   return (
     <div>
@@ -150,7 +148,7 @@ const DeviceManagement: React.FC = () => {
                         <option value="online">Online</option>
                         <option value="offline">Offline</option>
                       </select>
-                      <FaChevronDown size={15} color="#888888" className="dropdown-icon"/>
+                      <FaChevronDown size={15} color="#888888" className="dropdown-icon" />
                     </div>
                   </th>
                   {columns.map((col, index) => (
@@ -175,7 +173,10 @@ const DeviceManagement: React.FC = () => {
                         className={`status-dot ${user.status === "online" ? "online" : "offline"}`}
                       ></span>
                     </td>
-                    <td className="name-col">{user.name}</td>
+                    <td className="name-col">
+                        <img src={user.image} alt="avatar"/>
+                        {user.name}
+                    </td>
                     {columns.map((col) => (
                       <td key={col}>
                         <label className="switch">
@@ -193,7 +194,6 @@ const DeviceManagement: React.FC = () => {
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
 
